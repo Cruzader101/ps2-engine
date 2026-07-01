@@ -1,0 +1,16 @@
+# Build output
+build/
+out/
+cmake-build-*/
+
+# vcpkg
+vcpkg_installed/
+vcpkg/
+
+# Editor / OS
+.vs/
+.vscode/
+.idea/
+*.user
+Thumbs.db
+.DS_Store
