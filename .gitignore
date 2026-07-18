@@ -7,6 +7,12 @@ cmake-build-*/
 vcpkg_installed/
 vcpkg/
 
+# Compiled binaries / scratch build junk
+*.exe
+*.obj
+*.pdb
+*.ilk
+
 # Editor / OS
 .vs/
 .vscode/

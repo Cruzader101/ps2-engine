@@ -142,7 +142,7 @@ build-time tool, not part of the runtime, so it can be a separate small executab
 | 6 | Math conventions | RH, column-major, column vectors (`Proj*View*Model*v`, upload `GL_FALSE`) | OpenGL-native; no transpose, CPU `Mat4` matches GLSL `mat4` |
 | 7 | Asset cooker | Deferred; raw glTF at runtime first, build cooker when the 4 MB tracker fires | Don't design the binary format before the renderer says what it needs |
 | 8 | Character | Rigid segmented hierarchy first; skinning later | Teaches hierarchy, more PS2-authentic (joint gaps); hierarchy reused by a real skeleton |
-| 9 | Game loop | Fixed timestep + accumulator + render interpolation | Deterministic, framerate-independent, stable collision |
+| 9 | Game loop | Fixed timestep + accumulator + render interpolation | Deterministic, framerate-independent, stable collision. **Deferred at skeleton** — a simple vsync-capped loop ships milestone 1; the accumulator lands when the first sim (character + collision) needs it. See ADR-0002 |
 | 10 | Color pipeline | Gamma space, no linear workflow, RGBA8 FBO | More authentic AND simpler; makes the dither read strong; reversible later |
 | 11 | Collision | Discrete AABB/sphere push-out first; swept only on real tunneling | Fixed dt caps per-step motion; swept's edge cases are a slice-staller |
 | 12 | Audio | One uncompressed positional WAV via SDL2; ADPCM deferred | ADPCM is gold-plating until the 32 MB budget makes sample size hurt |
@@ -153,6 +153,9 @@ build-time tool, not part of the runtime, so it can be a separate small executab
 A sane sequence that always leaves you with something running:
 
 1. **Skeleton** — CMake + SDL2 + glad, open a window, clear it to a color. Proves the toolchain.
+   **✅ Done (2026-07-11).** `src/main.cpp`: GL 3.3 core context, glad loaded, vsync-capped
+   render loop clearing to blue, `PS2_ASSERT`/`LOG` macros, reverse-order teardown. Loop
+   pacing recorded in ADR-0002. See dev-log 2026-07-11.
 2. **First geometry** — your math lib plus a hardcoded spinning textured cube with a
    perspective camera, rendered straight to the screen. Write vec/mat *scalar first* to
    get the cube up; **then** rewrite them as SIMD, keeping the scalar version as a test
