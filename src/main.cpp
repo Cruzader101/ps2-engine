@@ -2,15 +2,8 @@
 #include <SDL.h>
 #include <cstdio>
 #include <cstdlib>
-
-#define PS2_ASSERT(cond, msg) \
-   do { \
-     if (!(cond)) { \
-       printf("ASSERT FAILED: %s\n at %s:%d\n", \
-           msg, __FILE__, __LINE__); \
-       abort(); \
-     } \
-   } while (0)
+#include <core/assert.h>
+#include <math/vec3.h>
 
 #define LOG(msg) printf("%s\n", msg)
 
