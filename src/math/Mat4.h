@@ -36,11 +36,12 @@ constexpr Mat4 operator*(const Mat4& a, const Mat4& b) {
   return result;
 }
 
-bool approx_equal(const Mat4& a, const Mat4& b, float eps = 1e-5f) {
-   for (int i = 0; i < 17; ++i) {
-      if (std::fabs(a.m[i] - b.m[i] > eps), true) {
-        break;
+inline bool approx_equal(const Mat4& a, const Mat4& b, float eps = 1e-5f) {
+   for (int i = 0; i < 16; ++i) {
+      if (std::fabs(a.m[i] - b.m[i]) > eps) {
+        return false;
       }
    }
+   return true;
 }
 
